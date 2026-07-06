@@ -8,7 +8,6 @@ async function run() {
     initialMousePos: { x: 100, y: 600 },
     initialZoom: 1,
   });
-  let isOk = true;
 
   try {
     // 1. Navigate
@@ -30,7 +29,6 @@ async function run() {
     await page.waitForTimeout(500);
   } catch (error) {
     console.error("Interaction thread crashed:", error);
-    isOk = false;
   } finally {
     // 3. Guarantees browser closing and files flushing even if actions fail
     await recorder.closeAndSave();
