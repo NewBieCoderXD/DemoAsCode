@@ -1,19 +1,9 @@
 import { test, expect, Browser, BrowserContext, Page } from "@playwright/test";
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, mkdirSync, unlinkSync, existsSync } from "fs";
 import path from "path";
 import { chromium } from "playwright";
-
-export interface MouseFrame {
-  t: number; // Timestamp in seconds relative to recording start
-  x: number; // X coordinate containing scroll offsets
-  y: number; // Y coordinate containing scroll offsets
-  clicked: boolean;
-}
-
-export interface ZoomFrame {
-  t: number; // Timestamp in seconds relative to recording start
-  zoom: number; // Zoom scale multiplier
-}
+import * as nativeEngine from "../../dist/index.js";
+import type { MouseLogEntry, ZoomLogEntry } from "../../dist/index.js";
 
 export class TelemetryRecorder {
   private outputDir: string;
@@ -21,8 +11,8 @@ export class TelemetryRecorder {
   private context: BrowserContext | null = null;
   private page: Page | null = null;
 
-  private mouseLog: MouseFrame[] = [];
-  private zoomLog: ZoomFrame[] = [];
+  private mouseLog: MouseLogEntry[] = [];
+  private zoomLog: ZoomLogEntry[] = [];
   private startTime: number = 0;
 
   constructor(outputDir: string = "./results") {
@@ -56,14 +46,14 @@ export class TelemetryRecorder {
     await this.page.setViewportSize({ width: 1920, height: 1080 });
 
     // Seed historical baselines
-    this.mouseLog = [{ t: 0, ...options.initialMousePos, clicked: false }];
+    this.mouseLog = [{ t: 0, ...options.initialMousePos }];
     this.zoomLog = [{ zoom: options.initialZoom, t: 0 }];
     this.startTime = Date.now();
 
     // Bind real-time execution streaming bridges
     await this.page.exposeFunction(
-      "streamMouseFrame",
-      (frame: Omit<MouseFrame, "t">) => {
+      "streamMouseLogEntry",
+      (frame: Omit<MouseLogEntry, "t">) => {
         this.mouseLog.push({
           t: (Date.now() - this.startTime - 300) / 1000, // Matching your original 0.3s calibration drag
           ...frame,
@@ -80,7 +70,7 @@ export class TelemetryRecorder {
       });
 
       window.addEventListener("mousemove", (e) => {
-        window["streamMouseFrame"]({
+        window["streamMouseLogEntry"]({
           x: e.clientX + window.scrollX,
           y: e.clientY + window.scrollY,
           clicked: false,
@@ -88,7 +78,7 @@ export class TelemetryRecorder {
       });
 
       window.addEventListener("mousedown", (e) => {
-        window["streamMouseFrame"]({
+        window["streamMouseLogEntry"]({
           x: e.clientX + window.scrollX,
           y: e.clientY + window.scrollY,
           clicked: true,
@@ -114,31 +104,51 @@ export class TelemetryRecorder {
    * Flushes out logs to disk and terminates internal automation dependencies cleanly
    */
   async closeAndSave(): Promise<void> {
-    if (this.page) {
-      // Pull down extra evaluations if present
-      const pageLogs = (await this.page.evaluate(
-        () => window["_mouseLog"] || [],
-      )) as MouseFrame[];
-      this.mouseLog.push(...pageLogs);
+    let result = "";
+    if (!this.page) {
+      return;
     }
 
-    // Write out separate telemetry channels
-    writeFileSync(
-      path.join(this.outputDir, "zoom_log.json"),
-      JSON.stringify(this.zoomLog, null, 2),
+    // Pull down extra evaluations if present
+    const pageLogs = (await this.page.evaluate(
+      () => window["_mouseLog"] || [],
+    )) as MouseLogEntry[];
+    this.mouseLog.push(...pageLogs);
+
+    const video = this.page.video();
+    if (!video) {
+      return;
+    }
+
+    const originalVideoPath = await video.path();
+    const tempVideoPath = path.join(
+      path.dirname(originalVideoPath),
+      `temp-${Date.now()}-${Math.floor(Math.random() * 1000)}.webm`,
     );
 
-    writeFileSync(
-      path.join(this.outputDir, "mouse_log.json"),
-      JSON.stringify(this.mouseLog, null, 2),
-    );
+    await this.context?.close();
 
-    console.log(
-      `✨ Saved ${this.mouseLog.length} mouse and ${this.zoomLog.length} zoom milestones.`,
-    );
+    // Explicitly wait for Playwright to finish writing and flushing the video file to our temp path
+    await video.saveAs(tempVideoPath);
 
-    if (this.browser) {
-      await this.browser.close();
+    await this.browser?.close();
+
+    console.log(`✨ Start post-processing...`);
+
+    result = await nativeEngine.processVideoPipeline(
+      tempVideoPath,
+      this.zoomLog,
+      this.mouseLog,
+    );
+    console.log(`✨ Done... log: ${result}`);
+
+    // Clean up the temporary video file
+    try {
+      if (existsSync(tempVideoPath)) {
+        unlinkSync(tempVideoPath);
+      }
+    } catch (e) {
+      console.error("Failed to clean up temp video:", e);
     }
   }
 }

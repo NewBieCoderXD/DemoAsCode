@@ -3,12 +3,26 @@ name = "demo-capture-postprocess"
 version = "0.1.0"
 edition = "2024"
 
-[[bin]]
-name = "demo-capture-postprocess"
-path = "post-processor/src/main.rs"
+[lib]
+name = "demo_as_code_postprocess"
+path = "post-processor/src/lib.rs"
+crate-type = ["cdylib", "lib"]
+
+[[test]]
+name = "pipeline_test"
+path = "post-processor/tests/pipeline_test.rs"
 
 [dependencies]
+crossbeam-channel = "0.5.15"
 fast_image_resize = { version = "6.0.0", features = ["image"] }
+napi = { version = "3.10.3", features = ["async", "napi4", "serde-json"] }
+napi-derive = "3.5.9"
+once_cell = "1.21.4"
+rand = "0.10.2"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.150"
 tokio = { version = "1.52.3", features = ["io-util", "macros", "process", "rt-multi-thread"] }
+
+[build-dependencies]
+flate2 = "1.1.9"
+tar = "0.4.46"
