@@ -135,7 +135,7 @@ export class TelemetryRecorder {
 
     console.log(`✨ Start post-processing...`);
 
-    result = await nativeEngine.processVideoPipeline(
+    result = nativeEngine.processVideoPipelineImpl(
       tempVideoPath,
       this.zoomLog,
       this.mouseLog,

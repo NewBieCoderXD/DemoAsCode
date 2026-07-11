@@ -1,7 +1,7 @@
 import * as nativeEngine from "../dist/index.js";
 
 async function main() {
-  const result = await nativeEngine.processVideoPipeline(
+  const result = nativeEngine.processVideoPipelineImpl(
     "/home/frook/Desktop/coding/demo-capture/results/videos/page@e0a5f41dbb490e2f9e42648326011540.webm",
     [
       { t: 0.0, zoom: 1.0 },

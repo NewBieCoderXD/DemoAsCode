@@ -1,8 +1,10 @@
 use crate::fr::images::Image;
+use crossbeam_channel::bounded;
 use fast_image_resize::{self as fr};
-use napi::bindgen_prelude::{AsyncTask, Env, Task};
 use napi_derive::napi;
 use serde::Deserialize;
+use std::io::BufRead;
+use std::io::BufReader;
 use std::io::Read;
 use std::io::Write;
 use std::path::Path;
@@ -94,56 +96,13 @@ fn get_mouse_at_time(time: f64, log: &[MouseLogEntry]) -> (f64, f64) {
     )
 }
 
-pub struct VideoPipelineTask {
-    pub video_path: String,
-    pub zoom_log: Vec<ZoomLogEntry>,
-    pub mouse_log: Vec<MouseLogEntry>,
-}
-
 #[napi]
-impl Task for VideoPipelineTask {
-    type Output = String;
-    type JsValue = String;
-
-    fn compute(&mut self) -> napi::Result<Self::Output> {
-        let rt = tokio::runtime::Builder::new_multi_thread()
-            .enable_all()
-            .build()
-            .map_err(|e| napi::Error::from_reason(e.to_string()))?;
-
-        let video_path = self.video_path.clone();
-        let zoom_log = self.zoom_log.clone();
-        let mouse_log = self.mouse_log.clone();
-
-        rt.block_on(
-            async move { process_video_pipeline_impl(video_path, zoom_log, mouse_log).await },
-        )
-    }
-
-    fn resolve(&mut self, _env: Env, output: Self::Output) -> napi::Result<Self::JsValue> {
-        Ok(output)
-    }
-}
-
-#[napi]
-pub fn process_video_pipeline(
-    video_path: String,
-    zoom_log: Vec<ZoomLogEntry>,
-    mouse_log: Vec<MouseLogEntry>,
-) -> AsyncTask<VideoPipelineTask> {
-    AsyncTask::new(VideoPipelineTask {
-        video_path,
-        zoom_log,
-        mouse_log,
-    })
-}
-
-pub async fn process_video_pipeline_impl(
+pub fn process_video_pipeline_impl(
     video_path: String,
     zoom_log: Vec<ZoomLogEntry>,
     mouse_log: Vec<MouseLogEntry>,
 ) -> napi::Result<String> {
-    let (done_tx, done_rx) = tokio::sync::oneshot::channel();
+    let (done_tx, done_rx) = bounded::<Result<std::string::String, napi::Error>>(1);
 
     println!("{}, {:?}, {:?}", video_path, zoom_log, mouse_log);
     let width = 1920 as u32;
@@ -154,7 +113,7 @@ pub async fn process_video_pipeline_impl(
 
     // Bounded capacity of 3 frames. This limits memory usage to ~18.6 MB (3 * 6.2MB)
     // while providing a perfect buffer cushion for heavy CPU computation spikes.
-    let (frame_tx, frame_rx) = crossbeam_channel::bounded::<Vec<u8>>(3);
+    let (frame_tx, frame_rx) = crossbeam_channel::bounded::<Vec<u8>>(20);
 
     let static_ffmpeg_path = Path::new("./bin").join("ffmpeg");
 
@@ -192,13 +151,27 @@ pub async fn process_video_pipeline_impl(
             "-",
         ]);
         decoder_cmd.stdout(Stdio::piped());
-        decoder_cmd.stderr(Stdio::null());
+        decoder_cmd.stderr(Stdio::piped());
 
         let mut decoder = decoder_cmd.spawn().expect("Failed to spawn FFmpeg decoder");
         let mut decoder_stdout = decoder
             .stdout
             .take()
             .expect("Failed to grab decoder stdout");
+
+        let decoder_stderr = decoder
+            .stderr
+            .take()
+            .expect("Failed to grab decoder stderr");
+
+        std::thread::spawn(move || {
+            let reader = BufReader::new(decoder_stderr);
+            for line in reader.lines() {
+                if let Ok(text) = line {
+                    println!("[Decoder FFMPEG Log] {}", text);
+                }
+            }
+        });
 
         loop {
             let mut buffer = vec![0u8; frame_size];
@@ -238,12 +211,29 @@ pub async fn process_video_pipeline_impl(
                 "yuv420p",
                 "./results/output_processed.webm",
             ]);
+
+            // let mut encoder_cmd = Command::new("sh");
+            // encoder_cmd.args(["-c", "cat > /dev/null"]);
+
             encoder_cmd.stdin(Stdio::piped());
             encoder_cmd.stdout(Stdio::null());
-            encoder_cmd.stderr(Stdio::inherit());
+            encoder_cmd.stderr(Stdio::null());
 
             let mut encoder = encoder_cmd.spawn().expect("Failed to spawn FFmpeg encoder");
             let mut encoder_stdin = encoder.stdin.take().expect("Failed to grab encoder stdin");
+            // let encoder_stderr = encoder
+            //     .stderr
+            //     .take()
+            //     .expect("Failed to grab encoder stderr");
+
+            // std::thread::spawn(move || {
+            //     let reader = BufReader::new(encoder_stderr);
+            //     for line in reader.lines() {
+            //         if let Ok(text) = line {
+            //             println!("[Encoder FFMPEG Log] {}", text);
+            //         }
+            //     }
+            // });
 
             let mut current_frame = 0;
             let mut smooth_zoom = if !zoom_log.is_empty() {
@@ -344,7 +334,7 @@ pub async fn process_video_pipeline_impl(
         let _ = done_tx.send(result.map_err(|e| napi::Error::from_reason(e.to_string())));
     });
 
-    done_rx.await.map_err(|_| {
+    done_rx.recv().map_err(|_| {
         napi::Error::from_reason("Video processor runtime worker thread collapsed abnormally")
     })?
 }
