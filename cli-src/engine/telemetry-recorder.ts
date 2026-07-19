@@ -5,6 +5,13 @@ import { chromium } from "playwright";
 import * as nativeEngine from "../../dist/index.js";
 import type { MouseLogEntry, ZoomLogEntry } from "../../dist/index.js";
 
+export interface DemoAsCodeOptions {
+  size: { width: number; height: number };
+  initialMousePos: { x: number; y: number };
+  initialZoom: number;
+  fps: number;
+}
+
 export class TelemetryRecorder {
   private outputDir: string;
   private browser: Browser | null = null;
@@ -14,6 +21,8 @@ export class TelemetryRecorder {
   private mouseLog: MouseLogEntry[] = [];
   private zoomLog: ZoomLogEntry[] = [];
   private startTime: number = 0;
+
+  private options: DemoAsCodeOptions | null = null;
 
   constructor(outputDir: string = "./results") {
     this.outputDir = outputDir;
@@ -25,13 +34,16 @@ export class TelemetryRecorder {
    * Initializes the headless Chromium instance and injects the telemetry listeners
    */
   async initialize(
-    options = {
+    options: DemoAsCodeOptions = {
       size: { width: 1920, height: 1080 },
       initialMousePos: { x: 500, y: 500 },
       initialZoom: 1,
+      fps: 60,
     },
   ): Promise<Page> {
     this.browser = await chromium.launch({ headless: true });
+
+    this.options = options;
 
     this.context = await this.browser.newContext({
       viewport: { ...options.size },
@@ -108,6 +120,10 @@ export class TelemetryRecorder {
     if (!this.page) {
       return;
     }
+    if (this.options == null) {
+      console.error("Failed to fetch DemoAsCode options");
+      return;
+    }
 
     // Pull down extra evaluations if present
     const pageLogs = (await this.page.evaluate(
@@ -135,11 +151,14 @@ export class TelemetryRecorder {
 
     console.log(`✨ Start post-processing...`);
 
-    result = nativeEngine.processVideoPipelineImpl(
-      tempVideoPath,
-      this.zoomLog,
-      this.mouseLog,
-    );
+    result = nativeEngine.processVideoPipelineImpl({
+      videoPath: tempVideoPath,
+      zoomLog: this.zoomLog,
+      mouseLog: this.mouseLog,
+      width: this.options!.size.width,
+      height: this.options!.size.height,
+      fps: this.options!.fps,
+    });
     console.log(`✨ Done... log: ${result}`);
 
     // Clean up the temporary video file

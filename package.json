@@ -20,7 +20,7 @@
   "scripts": {
     "napi:build": "napi build --platform --release --esm -o ./dist",
     "ts:build": "tsc",
-    "build": "pnpm run napi:build && npm run ts:build",
+    "build": "pnpm run napi:build && pnpm run ts:build",
     "prepublishOnly": "pnpm run build"
   },
   "keywords": [],
