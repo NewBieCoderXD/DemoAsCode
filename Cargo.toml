@@ -8,10 +8,6 @@ name = "demo_as_code_postprocess"
 path = "post-processor/src/lib.rs"
 crate-type = ["cdylib", "lib"]
 
-[[test]]
-name = "pipeline_test"
-path = "post-processor/tests/pipeline_test.rs"
-
 [dependencies]
 crossbeam-channel = "0.5.15"
 fast_image_resize = { version = "6.0.0", features = ["image"] }

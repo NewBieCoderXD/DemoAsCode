@@ -10,6 +10,7 @@ export interface DemoAsCodeOptions {
   initialMousePos: { x: number; y: number };
   initialZoom: number;
   fps: number;
+  crf?: number;
 }
 
 export class TelemetryRecorder {
@@ -38,7 +39,8 @@ export class TelemetryRecorder {
       size: { width: 1920, height: 1080 },
       initialMousePos: { x: 500, y: 500 },
       initialZoom: 1,
-      fps: 60,
+      fps: 25,
+      crf: 4,
     },
   ): Promise<Page> {
     this.browser = await chromium.launch({ headless: true });
@@ -151,7 +153,7 @@ export class TelemetryRecorder {
 
     console.log(`✨ Start post-processing...`);
 
-    result = nativeEngine.processVideoPipelineImpl({
+    result = await nativeEngine.processVideoPipelineImpl({
       videoPath: tempVideoPath,
       zoomLog: this.zoomLog,
       mouseLog: this.mouseLog,
