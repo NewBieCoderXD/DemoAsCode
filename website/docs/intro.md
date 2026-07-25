@@ -7,6 +7,8 @@ slug: /
 
 Browser recording with zoom and mouse telemetry for creating polished demo videos.
 
+<video src="https://github.com/user-attachments/assets/4f0af336-f068-4018-b849-f2c41a0e2775" controls width="100%"></video>
+
 ## Features
 
 - Records Playwright browser sessions
