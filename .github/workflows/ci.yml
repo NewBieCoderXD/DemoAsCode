@@ -17,19 +17,19 @@ jobs:
         settings:
           - host: macos-latest
             target: x86_64-apple-darwin
-            build: npx napi build --platform --release --esm --target x86_64-apple-darwin
+            build: pnpx napi build --platform --release --esm --target x86_64-apple-darwin
           - host: macos-latest
             target: aarch64-apple-darwin
-            build: npx napi build --platform --release --esm --target aarch64-apple-darwin
+            build: pnpx napi build --platform --release --esm --target aarch64-apple-darwin
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            build: npx napi build --platform --release --esm --target x86_64-unknown-linux-gnu --use-napi-cross
+            build: pnpx napi build --platform --release --esm --target x86_64-unknown-linux-gnu --use-napi-cross
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
-            build: npx napi build --platform --release --esm --target x86_64-unknown-linux-musl -x
+            build: pnpx napi build --platform --release --esm --target x86_64-unknown-linux-musl -x
           - host: windows-latest
             target: x86_64-pc-windows-msvc
-            build: npx napi build --platform --release --esm --target x86_64-pc-windows-msvc
+            build: pnpx napi build --platform --release --esm --target x86_64-pc-windows-msvc
 
     name: stable - ${{ matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
@@ -111,8 +111,8 @@ jobs:
 
       - name: Publish
         run: |
-          npm config set provenance true
+          pnpm config set provenance true
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-          npm publish --access public --no-git-checks
+          pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
