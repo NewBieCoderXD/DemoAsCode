@@ -1,13 +1,12 @@
-import { TelemetryRecorder } from "../telemetry-recorder.js";
+import { Recorder } from "../recorder.js";
 import { expect } from "@playwright/test";
 
 async function run() {
-  const recorder = new TelemetryRecorder("./results");
+  const recorder = new Recorder("./results");
   const page = await recorder.initialize({
     size: { width: 1920, height: 1080 },
     initialMousePos: { x: 100, y: 600 },
     initialZoom: 1,
-    fps: 25,
   });
 
   try {
