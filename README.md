@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="icon.svg" width="128" height="128" alt="DemoAsCode logo">
+  <img src="icon.svg" width="128" height="128" alt="DemoAsCode logo"/>
 </p>
 
 <h1 align="center">DemoAsCode</h1>
