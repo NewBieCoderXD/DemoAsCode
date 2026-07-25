@@ -1,6 +1,10 @@
-# DemoAsCode
+<p align="center">
+  <img src="icon.svg" width="128" height="128" alt="DemoAsCode logo">
+</p>
 
-A browser recording tool that captures Playwright sessions with mouse and zoom telemetry, then post-processes videos using FFmpeg and Rust
+<h1 align="center">DemoAsCode</h1>
+
+<p align="center">A browser recording tool that captures Playwright sessions with mouse and zoom telemetry, then post-processes videos using FFmpeg and Rust.</p>
 
 <video src='https://github.com/user-attachments/assets/4f0af336-f068-4018-b849-f2c41a0e2775' controls width="100%">Video link: https://github.com/user-attachments/assets/4f0af336-f068-4018-b849-f2c41a0e2775</video>
 

@@ -3,6 +3,10 @@ sidebar_position: 1
 slug: /
 ---
 
+<p align="center">
+  <img src="/img/favicon.svg" width="128" height="128" alt="DemoAsCode logo">
+</p>
+
 # DemoAsCode
 
 Browser recording with zoom and mouse telemetry for creating polished demo videos.

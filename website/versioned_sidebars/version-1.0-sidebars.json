@@ -5,7 +5,10 @@
     {
       "type": "category",
       "label": "Guides",
-      "items": ["guides/recording", "guides/post-processing"]
+      "items": [
+        "guides/recording",
+        "guides/post-processing"
+      ]
     }
   ]
 }
