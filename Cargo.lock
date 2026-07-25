@@ -104,7 +104,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "01334b89b69ff726750c5ce5073fc8bd860e99aa9a8fc5ca11b04730e3aee97a"
 
 [[package]]
-name = "demo-capture-postprocess"
+name = "demo-as-code"
 version = "0.1.0"
 dependencies = [
  "crossbeam-channel",

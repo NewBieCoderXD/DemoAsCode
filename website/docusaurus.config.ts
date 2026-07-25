@@ -3,15 +3,15 @@ import type { Config } from "@docusaurus/types";
 import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
-  title: "demo-capture",
+  title: "Demo As Code",
   tagline: "Browser recording with zoom and mouse telemetry",
   favicon: "img/favicon.ico",
 
   url: "https://frook.github.io",
-  baseUrl: "/demo-capture/",
+  baseUrl: "/DemoAsCode/",
 
   organizationName: "frook",
-  projectName: "demo-capture",
+  projectName: "DemoAsCode",
 
   onBrokenLinks: "warn",
 

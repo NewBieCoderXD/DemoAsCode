@@ -1,15 +1,15 @@
-# demo-capture
+# DemoAsCode
 
 A browser recording tool that captures Playwright sessions with mouse and zoom telemetry, then post-processes videos using FFmpeg and Rust.
 
 ## Overview
 
-demo-capture records browser interactions as polished demo videos. It tracks mouse movements and zoom levels during a Playwright session, then applies post-processing (zoom effects, cursor rendering, video encoding) via a Rust/NAPI backend.
+DemoAsCode records browser interactions as polished demo videos. It tracks mouse movements and zoom levels during a Playwright session, then applies post-processing (zoom effects, cursor rendering, video encoding) via a Rust/NAPI backend.
 
 ## Architecture
 
 ```
-demo-capture/
+DemoAsCode/
 ├── engine/                  # TypeScript recording layer
 │   └── recorder.ts          # Playwright orchestration + telemetry capture
 ├── post-processor/          # Rust NAPI native module
@@ -56,15 +56,16 @@ await recorder.closeAndSave();
 
 ## Build Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm run build` | Build both native module and TypeScript |
-| `pnpm run napi:build` | Build Rust NAPI module only |
-| `pnpm run ts:build` | Compile TypeScript only |
+| Command               | Description                             |
+| --------------------- | --------------------------------------- |
+| `pnpm run build`      | Build both native module and TypeScript |
+| `pnpm run napi:build` | Build Rust NAPI module only             |
+| `pnpm run ts:build`   | Compile TypeScript only                 |
 
 ## Output
 
 Recordings are saved to `./results/videos/` as processed MP4 files with:
+
 - Smooth zoom transitions between captured zoom points
 - Mouse cursor overlay
 - Configurable quality (CRF) and resolution
