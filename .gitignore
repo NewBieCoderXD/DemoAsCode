@@ -11,3 +11,10 @@ dist
 bin
 
 **/target
+
+# Website
+website/.docusaurus
+website/build
+website/node_modules
+website/.cache-loader
+website/docs/api

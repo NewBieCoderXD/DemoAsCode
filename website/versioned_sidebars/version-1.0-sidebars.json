@@ -1,0 +1,11 @@
+{
+  "docsSidebar": [
+    "intro",
+    "getting-started",
+    {
+      "type": "category",
+      "label": "Guides",
+      "items": ["guides/recording", "guides/post-processing"]
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["../engine/recorder.ts", "../engine/types/**/*"],
+  "exclude": ["../engine/example/**/*"]
+}
