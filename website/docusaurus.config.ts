@@ -5,9 +5,9 @@ import type * as Preset from "@docusaurus/preset-classic";
 const config: Config = {
   title: "Demo As Code",
   tagline: "Browser recording with zoom and mouse telemetry",
-  favicon: "img/favicon.ico",
+  favicon: "img/favicon.svg",
 
-  url: "https://frook.github.io",
+  url: "https://newbiecoderxd.github.io",
   baseUrl: "/DemoAsCode/",
 
   organizationName: "frook",
@@ -32,12 +32,8 @@ const config: Config = {
       {
         docs: {
           sidebarPath: "./sidebars.ts",
-          lastVersion: "current",
-          versions: {
-            current: {
-              label: "Next",
-            },
-          },
+          lastVersion: "1.0",
+          includeCurrentVersion: false,
         },
         blog: false,
         theme: {
@@ -71,7 +67,7 @@ const config: Config = {
 
   themeConfig: {
     navbar: {
-      title: "demo-capture",
+      title: "DemoAsCode",
       items: [
         {
           type: "docSidebar",
@@ -84,7 +80,7 @@ const config: Config = {
           position: "right",
         },
         {
-          href: "https://github.com/frook/demo-capture",
+          href: "https://github.com/NewBieCoderXD/DemoAsCode",
           label: "GitHub",
           position: "right",
         },
@@ -107,12 +103,12 @@ const config: Config = {
           items: [
             {
               label: "GitHub",
-              href: "https://github.com/frook/demo-capture",
+              href: "https://github.com/frook/DemoAsCode",
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} demo-capture contributors.`,
+      copyright: `Copyright © ${new Date().getFullYear()} DemoAsCode contributors.`,
     },
     prism: {
       theme: prismThemes.github,

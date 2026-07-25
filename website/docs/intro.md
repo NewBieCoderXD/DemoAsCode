@@ -3,7 +3,7 @@ sidebar_position: 1
 slug: /
 ---
 
-# demo-capture
+# DemoAsCode
 
 Browser recording with zoom and mouse telemetry for creating polished demo videos.
 
