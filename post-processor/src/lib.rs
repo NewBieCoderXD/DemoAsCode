@@ -28,6 +28,7 @@ pub struct PostProcessRequest {
     pub zoom_log: Vec<ZoomLogEntry>,
     pub mouse_log: Vec<MouseLogEntry>,
     pub crf: Option<u32>,
+    pub ffmpeg_path: Option<String>,
     pub width: u32,
     pub height: u32,
     pub fps: f64,
@@ -299,8 +300,7 @@ pub async fn process_video_pipeline_impl(request: PostProcessRequest) -> napi::R
     // Use an async bounded channel instead of crossbeam for raw frame backpressure
     let (frame_tx, mut frame_rx) = mpsc::channel::<Vec<u8>>(5);
 
-    // TODO: Allow ffmpeg binary path override
-    let ffmpeg_binary = "ffmpeg";
+    let ffmpeg_binary = request.ffmpeg_path.clone().unwrap_or("ffmpeg".to_string());
 
     let (mut decoder, mut decoder_stdout, decoder_stderr) =
         spawn_decoder(&ffmpeg_binary, &request.video_path)?;

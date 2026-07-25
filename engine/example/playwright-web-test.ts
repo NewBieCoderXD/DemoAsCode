@@ -1,4 +1,4 @@
-import { TelemetryRecorder } from "../engine/telemetry-recorder.js";
+import { TelemetryRecorder } from "../telemetry-recorder.js";
 import { expect } from "@playwright/test";
 
 async function run() {
