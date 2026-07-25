@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="icon.svg" width="128" height="128" alt="DemoAsCode logo"/>
+  <img src="https://raw.githubusercontent.com/NewBieCoderXD/DemoAsCode/refs/heads/main/website/static/img/favicon.svg" width="128" height="128" alt="DemoAsCode logo"/>
 </p>
 
 <h1 align="center">DemoAsCode</h1>

@@ -4,7 +4,7 @@ slug: /
 ---
 
 <p align="center">
-  <img src="/img/favicon.svg" width="128" height="128" alt="DemoAsCode logo"/>
+  <img src="/DemoAsCode/img/favicon.svg" width="128" height="128" alt="DemoAsCode logo"/>
 </p>
 
 # DemoAsCode
