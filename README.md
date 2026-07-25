@@ -1,6 +1,8 @@
 # DemoAsCode
 
-A browser recording tool that captures Playwright sessions with mouse and zoom telemetry, then post-processes videos using FFmpeg and Rust.
+A browser recording tool that captures Playwright sessions with mouse and zoom telemetry, then post-processes videos using FFmpeg and Rust
+
+<video src='[video2.mp4](https://github.com/user-attachments/assets/4f0af336-f068-4018-b849-f2c41a0e2775)' controls width="100%">Video link: https://github.com/user-attachments/assets/4f0af336-f068-4018-b849-f2c41a0e2775</video>
 
 ## Overview
 
