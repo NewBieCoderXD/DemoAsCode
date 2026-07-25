@@ -9,10 +9,8 @@ import winston from "winston";
 const logger = winston.createLogger({
   level: "info",
   format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.printf(({ timestamp, level, message }) => {
-      return `${timestamp} [${level.toUpperCase()}] ${message}`;
-    }),
+    winston.format.splat(), // Allows string substitution
+    winston.format.simple(), // Simple plain-text display
   ),
   transports: [new winston.transports.Console()],
 });
@@ -87,8 +85,8 @@ export class Recorder {
       },
     );
 
-    await page.addInitScript(() => {
-      const handler = (e: MouseEvent) => {
+    await page.evaluate(`(() => {
+      const handler = (e) => {
         if (typeof window.__recorder_streamMouseLog === "function") {
           window.__recorder_streamMouseLog({
             x: e.clientX + window.scrollX,
@@ -100,7 +98,7 @@ export class Recorder {
 
       window.addEventListener("mousemove", handler, { passive: true });
       window.addEventListener("mousedown", handler, { passive: true });
-    });
+    })()`);
   }
 
   logZoom(zoomFactor: number): void {
