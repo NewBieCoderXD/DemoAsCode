@@ -116,5 +116,5 @@ jobs:
       - name: Publish
         run: |
           pnpm config set provenance true
-          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+          pnpm exec napi prepublish --no-gh-release -t npm
           pnpm stage publish --access public --no-git-checks
