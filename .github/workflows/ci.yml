@@ -116,5 +116,5 @@ jobs:
       - name: Publish
         run: |
           pnpm config set provenance true
-          pnpm exec napi prepublish --no-gh-release -t npm --access public
+          pnpm exec napi prepublish --no-gh-release -t npm
           pnpm stage publish --access public --no-git-checks
