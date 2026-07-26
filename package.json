@@ -1,10 +1,22 @@
 {
   "name": "demo-as-code",
   "version": "1.0.0",
-  "description": "",
-  "keywords": [],
+  "keywords": [
+    "demo",
+    "playwright",
+    "demo-as-code"
+  ],
+  "description": "Demo As Code tool using Playwright & Rust",
+  "author": "Chanmetha Promvijitrakarn (NewBieCoderXD) <fruity5555@gmail.com>",
+  "homepage": "https://github.com/NewBieCoderXD/DemoAsCode#readme",
+  "bugs": {
+    "url": "https://github.com/NewBieCoderXD/DemoAsCode/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewBieCoderXD/DemoAsCode.git"
+  },
   "license": "ISC",
-  "author": "",
   "files": [
     "dist"
   ],
@@ -14,7 +26,7 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
+      "import": "./dist/index.js",
       "default": "./dist/index.js"
     }
   },
@@ -24,7 +36,6 @@
     "build": "pnpm run napi:build && pnpm run ts:build",
     "napi:create-npm-dirs": "napi create-npm-dirs",
     "napi:artifacts": "napi artifacts",
-    "prepublishOnly": "pnpm run build",
     "docs:start": "pnpm --filter ./website start",
     "docs:build": "pnpm --filter ./website build",
     "docs:deploy": "pnpm --filter ./website deploy"
