@@ -39,7 +39,7 @@
     "docs:start": "pnpm --filter ./website start",
     "docs:build": "pnpm --filter ./website build",
     "docs:deploy": "pnpm --filter ./website deploy",
-    "prepublishOnly": "napi prepublish -t npm"
+    "prepublishOnly": "napi prepublish -t npm --no-gh-release"
   },
   "dependencies": {
     "@napi-rs/cli": "3.7.2",
