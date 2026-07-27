@@ -38,7 +38,8 @@
     "napi:artifacts": "napi artifacts",
     "docs:start": "pnpm --filter ./website start",
     "docs:build": "pnpm --filter ./website build",
-    "docs:deploy": "pnpm --filter ./website deploy"
+    "docs:deploy": "pnpm --filter ./website deploy",
+    "prepublishOnly": "napi prepublish -t npm"
   },
   "dependencies": {
     "@napi-rs/cli": "3.7.2",
@@ -73,5 +74,12 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "optionalDependencies": {
+    "demo-as-code-linux-x64-gnu": "1.0.2",
+    "demo-as-code-linux-x64-musl": "1.0.2",
+    "demo-as-code-darwin-x64": "1.0.2",
+    "demo-as-code-darwin-arm64": "1.0.2",
+    "demo-as-code-win32-x64-msvc": "1.0.2"
   }
 }
