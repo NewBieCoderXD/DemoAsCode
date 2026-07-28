@@ -122,23 +122,24 @@ jobs:
       - name: List packages
         run: ls -la ./npm && find ./npm -name "*.node" -o -name "package.json" | head -20
 
-      - name: Create dist dir
-        run: mkdir dist
-
       - name: Restore generated binding wrappers
-        run: cp artifacts/napi-wrappers/* ./dist/
+        run: |
+          mkdir dist
+          cp artifacts/napi-wrappers/* ./dist/
 
       - name: Build TypeScript
         run: pnpm run ts:build
 
+      - name: Prepare for prepublish
+        run: pnpm exec napi prepublish -t npm --skip-optional-publish
+
+      # Because napi-rs doesn't support stage prepublish
       - name: Publish platform packages
         run: |
           for dir in npm/*/; do
             if [ -f "$dir/package.json" ]; then
               echo "Publishing $dir..."
-              (cd "$dir" && pnpm stage publish --access public --no-git-checks) || {
-                echo "⚠️ Failed to publish $dir — skipping..."
-              }
+              (cd "$dir" && pnpm stage publish --access public --no-git-checks)
             fi
           done
 
