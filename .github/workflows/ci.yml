@@ -76,6 +76,15 @@ jobs:
           path: ${{ env.APP_NAME }}.*.node
           if-no-files-found: error
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: napi-wrappers
+          path: |
+            index.js
+            index.d.ts
+          if-no-files-found: error
+          overwrite: true
+
   publish:
     needs: build
     environment: npm-production
@@ -113,8 +122,11 @@ jobs:
       - name: List packages
         run: ls -la ./npm && find ./npm -name "*.node" -o -name "package.json" | head -20
 
-      - name: Prepare root package
-        run: pnpm ts:build
+      - name: Restore generated binding wrappers
+        run: cp artifacts/napi-wrappers/* ./dist/
+
+      - name: Build TypeScript
+        run: pnpm run ts:build
 
       - name: Publish platform packages
         env:

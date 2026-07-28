@@ -1,9 +1,9 @@
-import { test, expect, Browser, BrowserContext, Page } from "@playwright/test";
-import { writeFileSync, mkdirSync, unlinkSync, existsSync } from "fs";
-import path from "path";
+import { Browser, BrowserContext, Page } from "@playwright/test";
+import { mkdirSync, unlinkSync, existsSync } from "node:fs";
+import path from "node:path";
 import { chromium } from "playwright";
-import * as nativeEngine from "../dist/index.js";
-import type { MouseLogEntry, ZoomLogEntry } from "../dist/index.js";
+import * as nativeEngine from "#native";
+import type { MouseLogEntry, ZoomLogEntry } from "#native";
 import winston from "winston";
 
 const logger = winston.createLogger({
