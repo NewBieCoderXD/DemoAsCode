@@ -15,21 +15,21 @@ jobs:
       fail-fast: false
       matrix:
         settings:
-          # - host: macos-latest
-          #   target: x86_64-apple-darwin
-          #   build: pnpm exec napi build --platform --release --esm --target x86_64-apple-darwin
-          # - host: macos-latest
-          #   target: aarch64-apple-darwin
-          #   build: pnpm exec napi build --platform --release --esm --target aarch64-apple-darwin
+          - host: macos-latest
+            target: x86_64-apple-darwin
+            build: pnpm exec napi build --platform --release --esm --target x86_64-apple-darwin
+          - host: macos-latest
+            target: aarch64-apple-darwin
+            build: pnpm exec napi build --platform --release --esm --target aarch64-apple-darwin
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             build: pnpm exec napi build --platform --release --esm --target x86_64-unknown-linux-gnu --use-napi-cross
-          # - host: ubuntu-latest
-          #   target: x86_64-unknown-linux-musl
-          #   build: pnpm exec napi build --platform --release --esm --target x86_64-unknown-linux-musl -x
-          # - host: windows-latest
-          #   target: x86_64-pc-windows-msvc
-          #   build: pnpm exec napi build --platform --release --esm --target x86_64-pc-windows-msvc
+          - host: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            build: pnpm exec napi build --platform --release --esm --target x86_64-unknown-linux-musl -x
+          - host: windows-latest
+            target: x86_64-pc-windows-msvc
+            build: pnpm exec napi build --platform --release --esm --target x86_64-pc-windows-msvc
 
     name: stable - ${{ matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
