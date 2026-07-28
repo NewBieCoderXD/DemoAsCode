@@ -125,11 +125,11 @@ jobs:
       - name: Create dist dir
         run: mkdir dist
 
-      - name: Restore generated binding wrappers
-        run: cp artifacts/napi-wrappers/* ./dist/
+      # - name: Restore generated binding wrappers
+      #   run: cp artifacts/napi-wrappers/* ./dist/
 
-      - name: Build TypeScript
-        run: pnpm run ts:build
+      # - name: Build TypeScript
+      #   run: pnpm run ts:build
 
       - name: Publish platform packages
         env:
