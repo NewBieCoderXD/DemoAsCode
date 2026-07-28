@@ -122,6 +122,9 @@ jobs:
       - name: List packages
         run: ls -la ./npm && find ./npm -name "*.node" -o -name "package.json" | head -20
 
+      - name: Create dist dir
+        run: mkdir dist
+
       - name: Restore generated binding wrappers
         run: cp artifacts/napi-wrappers/* ./dist/
 
@@ -143,3 +146,5 @@ jobs:
         env:
           NPM_CONFIG_PROVENANCE: "true"
         run: pnpm stage publish --access public --no-git-checks
+
+# TODO: Check if tag and package.json version matches
