@@ -120,11 +120,11 @@ jobs:
           for dir in npm/*/; do
             if [ -f "$dir/package.json" ]; then
               echo "Publishing $dir..."
-              (cd "$dir" && NODE_AUTH_TOKEN="" pnpm publish --access public --no-git-checks --tag stage)
+              (cd "$dir" && pnpm stage publish --access public --no-git-checks)
             fi
           done
 
       - name: Publish root package
         env:
           NPM_CONFIG_PROVENANCE: "true"
-        run: NODE_AUTH_TOKEN="" pnpm publish --access public --no-git-checks --tag stage
+        run: pnpm stage publish --access public --no-git-checks
