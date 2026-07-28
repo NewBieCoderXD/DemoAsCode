@@ -125,15 +125,13 @@ jobs:
       - name: Create dist dir
         run: mkdir dist
 
-      # - name: Restore generated binding wrappers
-      #   run: cp artifacts/napi-wrappers/* ./dist/
+      - name: Restore generated binding wrappers
+        run: cp artifacts/napi-wrappers/* ./dist/
 
-      # - name: Build TypeScript
-      #   run: pnpm run ts:build
+      - name: Build TypeScript
+        run: pnpm run ts:build
 
       - name: Publish platform packages
-        env:
-          NPM_CONFIG_PROVENANCE: "true"
         run: |
           for dir in npm/*/; do
             if [ -f "$dir/package.json" ]; then
@@ -145,8 +143,6 @@ jobs:
           done
 
       - name: Publish root package
-        env:
-          NPM_CONFIG_PROVENANCE: "true"
         run: pnpm stage publish --access public --no-git-checks
 
 # TODO: Check if tag and package.json version matches
