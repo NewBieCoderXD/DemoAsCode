@@ -2,8 +2,9 @@ import { Browser, BrowserContext, Page } from "@playwright/test";
 import { mkdirSync, unlinkSync, existsSync } from "node:fs";
 import path from "node:path";
 import { chromium } from "playwright";
-import * as nativeEngine from "#native";
-import type { MouseLogEntry, ZoomLogEntry } from "#native";
+import * as postProcessEngine from "#binding";
+
+import type { MouseLogEntry, ZoomLogEntry } from "#binding";
 import winston from "winston";
 
 const logger = winston.createLogger({
@@ -15,6 +16,13 @@ const logger = winston.createLogger({
   transports: [new winston.transports.Console()],
 });
 
+const DEFAULT_DEMO_OPTIONS: DemoAsCodeOptions = {
+  size: { width: 1920, height: 1080 },
+  initialMousePos: { x: 500, y: 500 },
+  initialZoom: 1,
+  crf: 4,
+};
+
 export interface DemoAsCodeOptions {
   size: { width: number; height: number };
   initialMousePos: { x: number; y: number };
@@ -23,7 +31,7 @@ export interface DemoAsCodeOptions {
 }
 
 export class Recorder {
-  private outputDir: string;
+  private readonly outputDir: string;
   private browser: Browser | null = null;
   private context: BrowserContext | null = null;
   private page: Page | null = null;
@@ -32,7 +40,7 @@ export class Recorder {
   private zoomLog: ZoomLogEntry[] = [];
   private startTime: number = 0;
 
-  private ffmpegPath: string | undefined = undefined;
+  private readonly ffmpegPath: string | undefined = undefined;
 
   private options: DemoAsCodeOptions | null = null;
 
@@ -41,34 +49,37 @@ export class Recorder {
     mkdirSync(path.join(this.outputDir, "videos"), { recursive: true });
   }
 
-  async initialize(
-    options: DemoAsCodeOptions = {
-      size: { width: 1920, height: 1080 },
-      initialMousePos: { x: 500, y: 500 },
-      initialZoom: 1,
-      crf: 4,
-    },
-  ): Promise<Page> {
+  async initialize(options: Partial<DemoAsCodeOptions>): Promise<Page> {
+    const config: DemoAsCodeOptions = {
+      ...DEFAULT_DEMO_OPTIONS,
+      ...options,
+      size: { ...DEFAULT_DEMO_OPTIONS.size, ...options?.size },
+      initialMousePos: {
+        ...DEFAULT_DEMO_OPTIONS.initialMousePos,
+        ...options?.initialMousePos,
+      },
+    };
+
     logger.info("Initializing headless Chromium");
 
     this.browser = await chromium.launch({ headless: true });
 
-    this.options = options;
+    this.options = config;
 
     this.context = await this.browser.newContext({
-      viewport: { ...options.size },
+      viewport: { ...config.size },
       deviceScaleFactor: 1,
       recordVideo: {
         dir: path.join(this.outputDir, "videos"),
-        size: { ...options.size },
+        size: { ...config.size },
       },
     });
 
     this.page = await this.context.newPage();
     await this.page.setViewportSize({ width: 1920, height: 1080 });
 
-    this.mouseLog = [{ t: 0, ...options.initialMousePos }];
-    this.zoomLog = [{ zoom: options.initialZoom, t: 0 }];
+    this.mouseLog = [{ t: 0, ...config.initialMousePos }];
+    this.zoomLog = [{ zoom: config.initialZoom, t: 0 }];
     this.startTime = Date.now();
 
     this.setupTelemetry(this.page);
@@ -138,7 +149,7 @@ export class Recorder {
 
     logger.info("Starting post-processing");
 
-    result = await nativeEngine.processVideoPipelineImpl({
+    result = await postProcessEngine.processVideoPipelineImpl({
       videoPath: tempVideoPath,
       zoomLog: this.zoomLog,
       mouseLog: this.mouseLog,

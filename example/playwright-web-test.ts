@@ -1,4 +1,4 @@
-import { Recorder } from "../engine/recorder.js";
+import { Recorder } from "../engine/index.js";
 import { expect } from "@playwright/test";
 
 async function run() {
@@ -35,4 +35,4 @@ async function run() {
   }
 }
 
-run();
+await run();

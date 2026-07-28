@@ -24,7 +24,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "imports": {
-    "#native": "./dist/index.js"
+    "#binding": "./dist/binding/index.js"
   },
   "exports": {
     ".": {
@@ -34,7 +34,7 @@
     }
   },
   "scripts": {
-    "napi:build": "napi build --platform --release --esm -o ./dist",
+    "napi:build": "napi build --platform --release --esm -o ./dist/binding",
     "ts:build": "tsc",
     "build": "pnpm run napi:build && pnpm run ts:build",
     "napi:create-npm-dirs": "napi create-npm-dirs",
