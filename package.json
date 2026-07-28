@@ -38,8 +38,7 @@
     "napi:artifacts": "napi artifacts",
     "docs:start": "pnpm --filter ./website start",
     "docs:build": "pnpm --filter ./website build",
-    "docs:deploy": "pnpm --filter ./website deploy",
-    "prepublishOnly": "napi prepublish -t npm --no-gh-release"
+    "docs:deploy": "pnpm --filter ./website deploy"
   },
   "dependencies": {
     "@napi-rs/cli": "3.7.2",

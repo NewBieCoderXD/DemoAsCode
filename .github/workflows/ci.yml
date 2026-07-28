@@ -113,8 +113,18 @@ jobs:
       - name: List packages
         run: ls -la ./npm && find ./npm -name "*.node" -o -name "package.json" | head -20
 
-      - name: Publish
+      - name: Publish platform packages
         env:
           NPM_CONFIG_PROVENANCE: "true"
         run: |
-          pnpm publish --access public --no-git-checks --tag stage
+          for dir in npm/*/; do
+            if [ -f "$dir/package.json" ]; then
+              echo "Publishing $dir..."
+              (cd "$dir" && pnpm publish --access public --no-git-checks --tag stage)
+            fi
+          done
+
+      - name: Publish root package
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
+        run: pnpm publish --access public --no-git-checks --tag stage
