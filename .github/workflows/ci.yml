@@ -113,6 +113,9 @@ jobs:
       - name: List packages
         run: ls -la ./npm && find ./npm -name "*.node" -o -name "package.json" | head -20
 
+      - name: Prepare root package
+        run: pnpm ts:build
+
       - name: Publish platform packages
         env:
           NPM_CONFIG_PROVENANCE: "true"
