@@ -91,7 +91,7 @@ jobs:
 
       - uses: pnpm/action-setup@v4
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version-file: .node-version
           cache: pnpm
@@ -120,11 +120,11 @@ jobs:
           for dir in npm/*/; do
             if [ -f "$dir/package.json" ]; then
               echo "Publishing $dir..."
-              (cd "$dir" && pnpm publish --access public --no-git-checks --tag stage)
+              (cd "$dir" && NODE_AUTH_TOKEN="" pnpm publish --access public --no-git-checks --tag stage)
             fi
           done
 
       - name: Publish root package
         env:
           NPM_CONFIG_PROVENANCE: "true"
-        run: pnpm publish --access public --no-git-checks --tag stage
+        run: NODE_AUTH_TOKEN="" pnpm publish --access public --no-git-checks --tag stage
