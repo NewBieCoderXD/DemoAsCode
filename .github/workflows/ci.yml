@@ -138,7 +138,9 @@ jobs:
           for dir in npm/*/; do
             if [ -f "$dir/package.json" ]; then
               echo "Publishing $dir..."
-              (cd "$dir" && pnpm stage publish --access public --no-git-checks)
+              (cd "$dir" && pnpm stage publish --access public --no-git-checks) || {
+                echo "⚠️ Failed to publish $dir — skipping..."
+              }
             fi
           done
 
