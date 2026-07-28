@@ -2,9 +2,8 @@ import { Browser, BrowserContext, Page } from "@playwright/test";
 import { mkdirSync, unlinkSync, existsSync } from "node:fs";
 import path from "node:path";
 import { chromium } from "playwright";
-import * as postProcessEngine from "#binding";
-
-import type { MouseLogEntry, ZoomLogEntry } from "#binding";
+import * as postProcessEngine from "#postprocessing";
+import type { MouseLogEntry, ZoomLogEntry } from "#postprocessing";
 import winston from "winston";
 
 const logger = winston.createLogger({
@@ -138,6 +137,8 @@ export class Recorder {
     const originalVideoPath = await video.path();
     const tempVideoPath = path.join(
       path.dirname(originalVideoPath),
+
+      // eslint-disable-next-line sonarjs/pseudo-random
       `temp-${Date.now()}-${Math.floor(Math.random() * 1000)}.webm`,
     );
 

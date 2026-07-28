@@ -124,8 +124,8 @@ jobs:
 
       - name: Restore generated binding wrappers
         run: |
-          mkdir dist
-          cp artifacts/napi-wrappers/* ./dist/
+          mkdir -p dist/postprocessing/
+          cp artifacts/napi-wrappers/* ./dist/postprocessing/
 
       - name: Build TypeScript
         run: pnpm run ts:build

@@ -6,5 +6,6 @@
     "editor.defaultFormatter": "rust-lang.rust-analyzer"
   },
   "editor.formatOnSave": true,
-  "editor.formatOnSaveMode": "file"
+  "editor.formatOnSaveMode": "file",
+  "eslint.useFlatConfig": false
 }

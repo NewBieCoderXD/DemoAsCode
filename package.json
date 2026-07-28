@@ -24,7 +24,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "imports": {
-    "#binding": "./dist/binding/index.js"
+    "#postprocessing": "./dist/postprocessing/index.js"
   },
   "exports": {
     ".": {
@@ -34,27 +34,31 @@
     }
   },
   "scripts": {
-    "napi:build": "napi build --platform --release --esm -o ./dist/binding",
+    "napi:build": "napi build --platform --release --esm -o ./dist/postprocessing",
     "ts:build": "tsc",
     "build": "pnpm run napi:build && pnpm run ts:build",
     "napi:create-npm-dirs": "napi create-npm-dirs",
     "napi:artifacts": "napi artifacts",
+    "lint": "eslint .",
     "docs:start": "pnpm --filter ./website start",
     "docs:build": "pnpm --filter ./website build",
     "docs:deploy": "pnpm --filter ./website deploy"
   },
   "dependencies": {
-    "@napi-rs/cli": "3.7.2",
     "@playwright/test": "1.61.1",
-    "oxfmt": "0.57.0",
     "playwright": "1.61.1",
     "winston": "3.19.0"
   },
   "devDependencies": {
+    "@napi-rs/cli": "3.7.2",
     "@types/jsdom": "28.0.3",
     "@types/node": "26.1.0",
+    "eslint": "10.8.0",
+    "eslint-plugin-sonarjs": "4.2.0",
+    "oxfmt": "0.60.0",
     "tsx": "4.23.0",
-    "typescript": "^5.7.3"
+    "typescript": "5.7.3",
+    "typescript-eslint": "8.65.0"
   },
   "napi": {
     "binaryName": "demo-as-code-postprocess",
