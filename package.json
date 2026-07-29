@@ -3,11 +3,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "pnpm --filter @demo-as-code/postprocess build && pnpm --filter demo-as-code build",
+    "build": "pnpm --filter demo-as-code build",
     "docs:start": "pnpm --filter @demo-as-code/website start",
     "docs:build": "pnpm --filter @demo-as-code/website build",
     "docs:deploy": "pnpm --filter @demo-as-code/website deploy",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "napi:create-npm-dirs": "cd apps/engine/post-processor && napi create-npm-dirs",
+    "napi:artifacts": "cd apps/engine/post-processor && napi artifacts"
   },
   "devDependencies": {
     "@napi-rs/cli": "3.7.2",

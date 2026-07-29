@@ -17,6 +17,9 @@
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "imports": {
+    "#postprocessing": "./dist/postprocessing/index.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -24,14 +27,25 @@
       "default": "./dist/index.js"
     }
   },
+  "napi": {
+    "binaryName": "demo-as-code-postprocess",
+    "targets": [
+      "x86_64-unknown-linux-gnu",
+      "x86_64-unknown-linux-musl",
+      "x86_64-apple-darwin",
+      "aarch64-apple-darwin",
+      "x86_64-pc-windows-msvc"
+    ]
+  },
   "dependencies": {
-    "@demo-as-code/postprocess": "workspace:^",
     "@playwright/test": "1.61.1",
     "playwright": "1.61.1",
     "winston": "3.19.0"
   },
   "scripts": {
-    "build": "tsc"
+    "napi:build": "cd post-processor && napi build --platform --release --esm -o ../dist/postprocessing && cp *.node ../dist/postprocessing/ 2>/dev/null; true",
+    "ts:build": "tsc",
+    "build": "pnpm run napi:build && pnpm run ts:build"
   },
   "publishConfig": {
     "access": "public"

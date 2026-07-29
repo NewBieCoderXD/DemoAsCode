@@ -1,5 +1,6 @@
 packages:
   - "apps/*"
+  - "example"
 
 allowBuilds:
   core-js: true

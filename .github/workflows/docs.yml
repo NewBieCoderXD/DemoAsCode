@@ -6,7 +6,7 @@ on:
     paths:
       - "apps/website/**"
       - "apps/engine/src/**"
-      - "apps/post-processor/Cargo.toml"
+      - "apps/engine/post-processor/Cargo.toml"
   workflow_dispatch:
 
 permissions:

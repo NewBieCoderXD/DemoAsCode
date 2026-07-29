@@ -7,7 +7,7 @@ on:
 
 env:
   APP_NAME: demo-as-code-postprocess
-  POSTPROCESS_DIR: apps/post-processor
+  POSTPROCESS_DIR: apps/engine/post-processor
   CARGO_INCREMENTAL: 1
 
 jobs:
@@ -18,19 +18,19 @@ jobs:
         settings:
           - host: macos-latest
             target: x86_64-apple-darwin
-            build: pnpm --filter @demo-as-code/postprocess exec napi build --platform --release --esm -o ./dist --target x86_64-apple-darwin
+            build: cd $POSTPROCESS_DIR && napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-apple-darwin
           - host: macos-latest
             target: aarch64-apple-darwin
-            build: pnpm --filter @demo-as-code/postprocess exec napi build --platform --release --esm -o ./dist --target aarch64-apple-darwin
+            build: cd $POSTPROCESS_DIR && napi build --platform --release --esm -o ../dist/postprocessing --target aarch64-apple-darwin
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            build: pnpm --filter @demo-as-code/postprocess exec napi build --platform --release --esm -o ./dist --target x86_64-unknown-linux-gnu --use-napi-cross
+            build: cd $POSTPROCESS_DIR && napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-unknown-linux-gnu --use-napi-cross
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
-            build: pnpm --filter @demo-as-code/postprocess exec napi build --platform --release --esm -o ./dist --target x86_64-unknown-linux-musl -x
+            build: cd $POSTPROCESS_DIR && napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-unknown-linux-musl -x
           - host: windows-latest
             target: x86_64-pc-windows-msvc
-            build: pnpm --filter @demo-as-code/postprocess exec napi build --platform --release --esm -o ./dist --target x86_64-pc-windows-msvc
+            build: cd $POSTPROCESS_DIR && napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-pc-windows-msvc
 
     name: stable - ${{ matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
@@ -81,8 +81,8 @@ jobs:
         with:
           name: napi-wrappers
           path: |
-            ${{ env.POSTPROCESS_DIR }}/dist/index.js
-            ${{ env.POSTPROCESS_DIR }}/dist/index.d.ts
+            apps/engine/dist/postprocessing/index.js
+            apps/engine/dist/postprocessing/index.d.ts
           if-no-files-found: error
           overwrite: true
 
@@ -110,7 +110,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Create npm dirs
-        run: pnpm --filter @demo-as-code/postprocess exec napi create-npm-dirs
+        run: cd ${{ env.POSTPROCESS_DIR }} && napi create-npm-dirs
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
@@ -118,21 +118,21 @@ jobs:
           path: ${{ env.POSTPROCESS_DIR }}/artifacts
 
       - name: Move artifacts
-        run: pnpm --filter @demo-as-code/postprocess exec napi artifacts
+        run: cd ${{ env.POSTPROCESS_DIR }} && napi artifacts
 
       - name: List packages
         run: ls -la ${{ env.POSTPROCESS_DIR }}/npm && find ${{ env.POSTPROCESS_DIR }}/npm -name "*.node" -o -name "package.json" | head -20
 
       - name: Restore generated binding wrappers
         run: |
-          mkdir -p ${{ env.POSTPROCESS_DIR }}/dist/
-          cp ${{ env.POSTPROCESS_DIR }}/artifacts/napi-wrappers/* ${{ env.POSTPROCESS_DIR }}/dist/
+          mkdir -p apps/engine/dist/postprocessing/
+          cp ${{ env.POSTPROCESS_DIR }}/artifacts/napi-wrappers/* apps/engine/dist/postprocessing/
 
       - name: Build TypeScript
-        run: pnpm --filter demo-as-code build
+        run: pnpm --filter demo-as-code run ts:build
 
       - name: Prepare for prepublish
-        run: cd ${{ env.POSTPROCESS_DIR }} && pnpm exec napi prepublish -t npm --skip-optional-publish
+        run: cd ${{ env.POSTPROCESS_DIR }} && napi prepublish -t npm --skip-optional-publish
 
       - name: Publish platform packages
         run: |
