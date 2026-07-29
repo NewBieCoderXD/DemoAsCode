@@ -35,7 +35,7 @@ async function recordDemo() {
     // Zoom in for emphasis
     recorder.logZoom(2.5);
     await page.click("some-button");
-    
+
     // Zoom back out
     recorder.logZoom(1.0);
     await page.waitForTimeout(500);

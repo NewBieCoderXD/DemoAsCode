@@ -30,15 +30,15 @@ Final MP4
 
 The pipeline accepts these parameters:
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `videoPath` | `string` | Input video file |
-| `zoomLog` | `ZoomLogEntry[]` | Zoom level timeline |
-| `mouseLog` | `MouseLogEntry[]` | Mouse position timeline |
-| `width` | `number` | Output width |
-| `height` | `number` | Output height |
-| `fps` | `number` | Output frame rate |
-| `ffmpegPath` | `string?` | Custom FFmpeg binary path |
+| Parameter    | Type              | Description               |
+| ------------ | ----------------- | ------------------------- |
+| `videoPath`  | `string`          | Input video file          |
+| `zoomLog`    | `ZoomLogEntry[]`  | Zoom level timeline       |
+| `mouseLog`   | `MouseLogEntry[]` | Mouse position timeline   |
+| `width`      | `number`          | Output width              |
+| `height`     | `number`          | Output height             |
+| `fps`        | `number`          | Output frame rate         |
+| `ffmpegPath` | `string?`         | Custom FFmpeg binary path |
 
 ## Custom FFmpeg
 

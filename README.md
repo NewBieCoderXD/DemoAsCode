@@ -42,12 +42,12 @@ DemoAsCode/
 ## Supported Platforms
 
 | OS      | Architecture | Support |
-|---------|-------------|---------|
-| Linux   | x64 (glibc) | ✅ |
-| Linux   | x64 (musl)  | ✅ |
-| macOS   | x64 (Intel) | ✅ |
-| macOS   | ARM64 (M1+) | ✅ |
-| Windows | x64         | ✅ |
+| ------- | ------------ | ------- |
+| Linux   | x64 (glibc)  | ✅      |
+| Linux   | x64 (musl)   | ✅      |
+| macOS   | x64 (Intel)  | ✅      |
+| macOS   | ARM64 (M1+)  | ✅      |
+| Windows | x64          | ✅      |
 
 ## Installation
 
@@ -81,10 +81,10 @@ await recorder.closeAndSave();
 
 ## Build Commands
 
-| Command               | Description                             |
-| --------------------- | --------------------------------------- |
-| `pnpm run build`      | Build both native module and TypeScript |
-| `pnpm docs:build`     | Build documentation site                |
+| Command           | Description                             |
+| ----------------- | --------------------------------------- |
+| `pnpm run build`  | Build both native module and TypeScript |
+| `pnpm docs:build` | Build documentation site                |
 
 ## Output
 

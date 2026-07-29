@@ -3,15 +3,15 @@
   "version": "0.0.0",
   "license": "ISC",
   "type": "module",
-  "dependencies": {
-    "demo-as-code": "workspace:^",
-    "@playwright/test": "1.61.1",
-    "playwright": "1.61.1"
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsc"
   },
-  "publishConfig": {
-    "access": "public"
+  "dependencies": {
+    "@playwright/test": "1.61.1",
+    "demo-as-code": "workspace:^",
+    "playwright": "1.61.1"
   }
 }

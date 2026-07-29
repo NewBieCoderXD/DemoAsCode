@@ -23,21 +23,14 @@ const FeatureList: FeatureItem[] = [
           stroke="currentColor"
           strokeWidth="4"
         />
-        <rect
-          x="30"
-          y="40"
-          width="140"
-          height="90"
-          fill="currentColor"
-          opacity="0.1"
-        />
+        <rect x="30" y="40" width="140" height="90" fill="currentColor" opacity="0.1" />
         <circle cx="100" cy="170" r="15" fill="none" stroke="currentColor" strokeWidth="4" />
       </svg>
     ),
     description: (
       <>
-        Records Playwright browser sessions with full telemetry capture.
-        Mouse movements, clicks, and zoom levels are tracked automatically.
+        Records Playwright browser sessions with full telemetry capture. Mouse movements, clicks,
+        and zoom levels are tracked automatically.
       </>
     ),
   },
@@ -45,28 +38,23 @@ const FeatureList: FeatureItem[] = [
     title: "Zoom Effects",
     SVG: () => (
       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <circle
-          cx="100"
-          cy="100"
-          r="60"
-          fill="none"
+        <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" strokeWidth="4" />
+        <circle cx="100" cy="100" r="30" fill="currentColor" opacity="0.2" />
+        <line
+          x1="145"
+          y1="145"
+          x2="180"
+          y2="180"
           stroke="currentColor"
-          strokeWidth="4"
+          strokeWidth="6"
+          strokeLinecap="round"
         />
-        <circle
-          cx="100"
-          cy="100"
-          r="30"
-          fill="currentColor"
-          opacity="0.2"
-        />
-        <line x1="145" y1="145" x2="180" y2="180" stroke="currentColor" strokeWidth="6" strokeLinecap="round" />
       </svg>
     ),
     description: (
       <>
-        Smooth zoom transitions between captured points.
-        Emphasize important interactions in your demo videos.
+        Smooth zoom transitions between captured points. Emphasize important interactions in your
+        demo videos.
       </>
     ),
   },
@@ -74,16 +62,40 @@ const FeatureList: FeatureItem[] = [
     title: "Cross-Platform",
     SVG: () => (
       <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-        <rect x="20" y="50" width="80" height="60" rx="4" fill="none" stroke="currentColor" strokeWidth="4" />
-        <rect x="110" y="30" width="70" height="90" rx="4" fill="none" stroke="currentColor" strokeWidth="4" />
-        <rect x="30" y="130" width="140" height="40" rx="4" fill="none" stroke="currentColor" strokeWidth="4" />
+        <rect
+          x="20"
+          y="50"
+          width="80"
+          height="60"
+          rx="4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
+        <rect
+          x="110"
+          y="30"
+          width="70"
+          height="90"
+          rx="4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
+        <rect
+          x="30"
+          y="130"
+          width="140"
+          height="40"
+          rx="4"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+        />
       </svg>
     ),
     description: (
-      <>
-        Pre-built binaries for Linux, macOS, and Windows.
-        No build tools required for your users.
-      </>
+      <>Pre-built binaries for Linux, macOS, and Windows. No build tools required for your users.</>
     ),
   },
 ];

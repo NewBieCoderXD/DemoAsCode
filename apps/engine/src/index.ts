@@ -87,13 +87,10 @@ export class Recorder {
   }
 
   private async setupTelemetry(page: Page): Promise<void> {
-    await page.exposeFunction(
-      "__recorder_streamMouseLog",
-      (frame: Omit<MouseLogEntry, "t">) => {
-        const elapsedSeconds = (Date.now() - this.startTime) / 1000;
-        this.mouseLog.push({ t: elapsedSeconds, ...frame });
-      },
-    );
+    await page.exposeFunction("__recorder_streamMouseLog", (frame: Omit<MouseLogEntry, "t">) => {
+      const elapsedSeconds = (Date.now() - this.startTime) / 1000;
+      this.mouseLog.push({ t: elapsedSeconds, ...frame });
+    });
 
     await page.evaluate(`(() => {
       const handler = (e) => {

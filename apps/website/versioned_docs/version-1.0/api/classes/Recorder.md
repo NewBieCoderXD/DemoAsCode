@@ -24,7 +24,7 @@ Defined in: [recorder.ts:39](https://github.com/NewBieCoderXD/DemoAsCode/blob/02
 
 ### closeAndSave()
 
-> **closeAndSave**(): `Promise`\<`void`\>
+> **closeAndSave**(): `Promise`\<`void`>>>>\>
 
 Defined in: [recorder.ts:112](https://github.com/NewBieCoderXD/DemoAsCode/blob/0220bedd39e71751ab1e536775e54b23aad50777/engine/recorder.ts#L112)
 
@@ -32,11 +32,11 @@ Defined in: [recorder.ts:112](https://github.com/NewBieCoderXD/DemoAsCode/blob/0
 
 `Promise`\<`void`\>
 
-***
+---
 
 ### initialize()
 
-> **initialize**(`options?`): `Promise`\<`Page`\>
+> **initialize**(`options?`): `Promise`\<`Page`>>>>\>
 
 Defined in: [recorder.ts:44](https://github.com/NewBieCoderXD/DemoAsCode/blob/0220bedd39e71751ab1e536775e54b23aad50777/engine/recorder.ts#L44)
 
@@ -50,7 +50,7 @@ Defined in: [recorder.ts:44](https://github.com/NewBieCoderXD/DemoAsCode/blob/02
 
 `Promise`\<`Page`\>
 
-***
+---
 
 ### logZoom()
 

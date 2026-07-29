@@ -10,7 +10,7 @@ Defined in: [recorder.ts:18](https://github.com/NewBieCoderXD/DemoAsCode/blob/02
 
 Defined in: [recorder.ts:22](https://github.com/NewBieCoderXD/DemoAsCode/blob/0220bedd39e71751ab1e536775e54b23aad50777/engine/recorder.ts#L22)
 
-***
+---
 
 ### initialMousePos
 
@@ -26,7 +26,7 @@ Defined in: [recorder.ts:20](https://github.com/NewBieCoderXD/DemoAsCode/blob/02
 
 > **y**: `number`
 
-***
+---
 
 ### initialZoom
 
@@ -34,7 +34,7 @@ Defined in: [recorder.ts:20](https://github.com/NewBieCoderXD/DemoAsCode/blob/02
 
 Defined in: [recorder.ts:21](https://github.com/NewBieCoderXD/DemoAsCode/blob/0220bedd39e71751ab1e536775e54b23aad50777/engine/recorder.ts#L21)
 
-***
+---
 
 ### size
 
