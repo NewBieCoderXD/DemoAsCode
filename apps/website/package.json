@@ -1,5 +1,5 @@
 {
-  "name": "demo-as-code-docs",
+  "name": "@demo-as-code/website",
   "version": "0.0.0",
   "private": true,
   "scripts": {

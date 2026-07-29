@@ -1,11 +1,11 @@
 [package]
-name = "demo-as-code"
+name = "demo-as-code-postprocess"
 version = "0.1.0"
 edition = "2024"
 
 [lib]
 name = "demo_as_code_postprocess"
-path = "post-processor/src/lib.rs"
+path = "src/lib.rs"
 crate-type = ["cdylib", "lib"]
 
 [dependencies]

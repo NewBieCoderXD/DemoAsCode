@@ -21,6 +21,16 @@ Browser recording with zoom and mouse telemetry for creating polished demo video
 - Post-processes videos with FFmpeg and Rust
 - Cross-platform support (Linux, macOS, Windows)
 
+## Supported Platforms
+
+| OS      | Architecture | Support |
+|---------|-------------|---------|
+| Linux   | x64 (glibc) | ✅ |
+| Linux   | x64 (musl)  | ✅ |
+| macOS   | x64 (Intel) | ✅ |
+| macOS   | ARM64 (M1+) | ✅ |
+| Windows | x64         | ✅ |
+
 ## Quick Start
 
 ```bash

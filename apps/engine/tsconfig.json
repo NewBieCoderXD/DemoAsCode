@@ -8,14 +8,14 @@
 
     "declaration": true,
     "outDir": "./dist",
-    "rootDir": "./engine",
+    "rootDir": "./src",
 
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "paths": { "~/*": ["./engine/*"] }
+    "paths": { "~/*": ["./src/*"] }
   },
-  "include": ["engine/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "results", "target"]
 }

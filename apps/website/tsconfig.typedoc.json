@@ -1,0 +1,4 @@
+{
+  "extends": "../engine/tsconfig.json",
+  "include": ["../engine/src/index.ts", "../engine/src/types/**/*"]
+}

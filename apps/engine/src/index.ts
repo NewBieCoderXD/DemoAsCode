@@ -2,8 +2,8 @@ import { Browser, BrowserContext, Page } from "@playwright/test";
 import { mkdirSync, unlinkSync, existsSync } from "node:fs";
 import path from "node:path";
 import { chromium } from "playwright";
-import * as postProcessEngine from "#postprocessing";
-import type { MouseLogEntry, ZoomLogEntry } from "#postprocessing";
+import * as postProcessEngine from "@demo-as-code/postprocess";
+import type { MouseLogEntry, ZoomLogEntry } from "@demo-as-code/postprocess";
 import winston from "winston";
 
 const logger = winston.createLogger({
