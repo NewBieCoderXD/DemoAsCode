@@ -13,8 +13,8 @@ bin
 **/target
 
 # Website
-website/.docusaurus
-website/build
-website/node_modules
-website/.cache-loader
-website/docs/api
+apps/website/.docusaurus
+apps/website/build
+apps/website/node_modules
+apps/website/.cache-loader
+apps/website/docs/api

@@ -1,12 +1,12 @@
 name: Docs
 
 on:
-  # push:
-  #   branches: [main]
-  #   paths:
-  #     - "website/**"
-  #     - "engine/**"
-  #     - "Cargo.toml"
+  push:
+    branches: [main]
+    paths:
+      - "apps/website/**"
+      - "apps/engine/src/**"
+      - "apps/post-processor/Cargo.toml"
   workflow_dispatch:
 
 permissions:
@@ -36,7 +36,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: website/build
+          path: apps/website/build
 
   deploy:
     needs: build

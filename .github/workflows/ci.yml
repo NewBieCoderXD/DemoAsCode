@@ -7,6 +7,7 @@ on:
 
 env:
   APP_NAME: demo-as-code-postprocess
+  POSTPROCESS_DIR: apps/post-processor
   CARGO_INCREMENTAL: 1
 
 jobs:
@@ -17,19 +18,19 @@ jobs:
         settings:
           - host: macos-latest
             target: x86_64-apple-darwin
-            build: pnpm exec napi build --platform --release --esm --target x86_64-apple-darwin
+            build: pnpm --filter @demo-as-code/postprocess exec napi build --platform --release --esm -o ./dist --target x86_64-apple-darwin
           - host: macos-latest
             target: aarch64-apple-darwin
-            build: pnpm exec napi build --platform --release --esm --target aarch64-apple-darwin
+            build: pnpm --filter @demo-as-code/postprocess exec napi build --platform --release --esm -o ./dist --target aarch64-apple-darwin
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            build: pnpm exec napi build --platform --release --esm --target x86_64-unknown-linux-gnu --use-napi-cross
+            build: pnpm --filter @demo-as-code/postprocess exec napi build --platform --release --esm -o ./dist --target x86_64-unknown-linux-gnu --use-napi-cross
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
-            build: pnpm exec napi build --platform --release --esm --target x86_64-unknown-linux-musl -x
+            build: pnpm --filter @demo-as-code/postprocess exec napi build --platform --release --esm -o ./dist --target x86_64-unknown-linux-musl -x
           - host: windows-latest
             target: x86_64-pc-windows-msvc
-            build: pnpm exec napi build --platform --release --esm --target x86_64-pc-windows-msvc
+            build: pnpm --filter @demo-as-code/postprocess exec napi build --platform --release --esm -o ./dist --target x86_64-pc-windows-msvc
 
     name: stable - ${{ matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
@@ -73,15 +74,15 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: ${{ env.APP_NAME }}.*.node
+          path: ${{ env.POSTPROCESS_DIR }}/${{ env.APP_NAME }}.*.node
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         with:
           name: napi-wrappers
           path: |
-            index.js
-            index.d.ts
+            ${{ env.POSTPROCESS_DIR }}/dist/index.js
+            ${{ env.POSTPROCESS_DIR }}/dist/index.d.ts
           if-no-files-found: error
           overwrite: true
 
@@ -109,41 +110,38 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Create npm dirs
-        run: pnpm exec napi create-npm-dirs
+        run: pnpm --filter @demo-as-code/postprocess exec napi create-npm-dirs
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          path: artifacts
+          path: ${{ env.POSTPROCESS_DIR }}/artifacts
 
       - name: Move artifacts
-        run: pnpm exec napi artifacts
+        run: pnpm --filter @demo-as-code/postprocess exec napi artifacts
 
       - name: List packages
-        run: ls -la ./npm && find ./npm -name "*.node" -o -name "package.json" | head -20
+        run: ls -la ${{ env.POSTPROCESS_DIR }}/npm && find ${{ env.POSTPROCESS_DIR }}/npm -name "*.node" -o -name "package.json" | head -20
 
       - name: Restore generated binding wrappers
         run: |
-          mkdir -p dist/postprocessing/
-          cp artifacts/napi-wrappers/* ./dist/postprocessing/
+          mkdir -p ${{ env.POSTPROCESS_DIR }}/dist/
+          cp ${{ env.POSTPROCESS_DIR }}/artifacts/napi-wrappers/* ${{ env.POSTPROCESS_DIR }}/dist/
 
       - name: Build TypeScript
-        run: pnpm run ts:build
+        run: pnpm --filter demo-as-code build
 
       - name: Prepare for prepublish
-        run: pnpm exec napi prepublish -t npm --skip-optional-publish
+        run: cd ${{ env.POSTPROCESS_DIR }} && pnpm exec napi prepublish -t npm --skip-optional-publish
 
-      # Because napi-rs doesn't support stage prepublish
       - name: Publish platform packages
         run: |
-          for dir in npm/*/; do
+          for dir in ${{ env.POSTPROCESS_DIR }}/npm/*/; do
             if [ -f "$dir/package.json" ]; then
               echo "Publishing $dir..."
               (cd "$dir" && pnpm stage publish --access public --no-git-checks)
             fi
           done
 
-      - name: Publish root package
-        run: pnpm stage publish --access public --no-git-checks
-
-# TODO: Check if tag and package.json version matches
+      - name: Publish engine package
+        run: pnpm --filter demo-as-code stage publish --access public --no-git-checks

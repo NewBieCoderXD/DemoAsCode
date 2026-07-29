@@ -9,8 +9,8 @@ export default defineConfig([
     "results/**",
     "target/**",
     "test-results/**",
-    "website/build/**",
-    "website/.docusaurus/**",
+    "apps/website/build/**",
+    "apps/website/.docusaurus/**",
   ]),
 
   // Spread because tseslint exports an array of configs

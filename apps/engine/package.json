@@ -1,0 +1,39 @@
+{
+  "name": "demo-as-code",
+  "version": "1.0.7",
+  "keywords": ["demo", "playwright", "demo-as-code"],
+  "description": "Demo As Code tool using Playwright & Rust",
+  "author": "Chanmetha Promvijitrakarn (NewBieCoderXD) <fruity5555@gmail.com>",
+  "homepage": "https://github.com/NewBieCoderXD/DemoAsCode#readme",
+  "bugs": {
+    "url": "https://github.com/NewBieCoderXD/DemoAsCode/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewBieCoderXD/DemoAsCode.git"
+  },
+  "license": "ISC",
+  "files": ["dist"],
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@demo-as-code/postprocess": "workspace:^",
+    "@playwright/test": "1.61.1",
+    "playwright": "1.61.1",
+    "winston": "3.19.0"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

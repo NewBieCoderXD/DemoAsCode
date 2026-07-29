@@ -1,53 +1,13 @@
 {
-  "name": "demo-as-code",
-  "version": "1.0.7",
-  "keywords": [
-    "demo",
-    "playwright",
-    "demo-as-code"
-  ],
-  "description": "Demo As Code tool using Playwright & Rust",
-  "author": "Chanmetha Promvijitrakarn (NewBieCoderXD) <fruity5555@gmail.com>",
-  "homepage": "https://github.com/NewBieCoderXD/DemoAsCode#readme",
-  "bugs": {
-    "url": "https://github.com/NewBieCoderXD/DemoAsCode/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NewBieCoderXD/DemoAsCode.git"
-  },
-  "license": "ISC",
-  "files": [
-    "dist"
-  ],
+  "name": "demo-as-code-monorepo",
+  "private": true,
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "imports": {
-    "#postprocessing": "./dist/postprocessing/index.js"
-  },
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "default": "./dist/index.js"
-    }
-  },
   "scripts": {
-    "napi:build": "napi build --platform --release --esm -o ./dist/postprocessing",
-    "ts:build": "tsc",
-    "build": "pnpm run napi:build && pnpm run ts:build",
-    "napi:create-npm-dirs": "napi create-npm-dirs",
-    "napi:artifacts": "napi artifacts",
-    "lint": "eslint .",
-    "docs:start": "pnpm --filter ./website start",
-    "docs:build": "pnpm --filter ./website build",
-    "docs:deploy": "pnpm --filter ./website deploy"
-  },
-  "dependencies": {
-    "@playwright/test": "1.61.1",
-    "playwright": "1.61.1",
-    "winston": "3.19.0"
+    "build": "pnpm --filter @demo-as-code/postprocess build && pnpm --filter demo-as-code build",
+    "docs:start": "pnpm --filter @demo-as-code/website start",
+    "docs:build": "pnpm --filter @demo-as-code/website build",
+    "docs:deploy": "pnpm --filter @demo-as-code/website deploy",
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@napi-rs/cli": "3.7.2",
@@ -60,16 +20,6 @@
     "typescript": "5.7.3",
     "typescript-eslint": "8.65.0"
   },
-  "napi": {
-    "binaryName": "demo-as-code-postprocess",
-    "targets": [
-      "x86_64-unknown-linux-gnu",
-      "x86_64-unknown-linux-musl",
-      "x86_64-apple-darwin",
-      "aarch64-apple-darwin",
-      "x86_64-pc-windows-msvc"
-    ]
-  },
   "packageManager": "pnpm@11.9.0",
   "devEngines": {
     "packageManager": {
@@ -77,8 +27,5 @@
       "version": "11.9.0",
       "onFail": "download"
     }
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

@@ -1,0 +1,24 @@
+{
+  "name": "@demo-as-code/postprocess",
+  "version": "1.0.7",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "napi": {
+    "binaryName": "demo-as-code-postprocess",
+    "targets": [
+      "x86_64-unknown-linux-gnu",
+      "x86_64-unknown-linux-musl",
+      "x86_64-apple-darwin",
+      "aarch64-apple-darwin",
+      "x86_64-pc-windows-msvc"
+    ]
+  },
+  "scripts": {
+    "build": "napi build --platform --release --esm -o ./dist && cp *.node dist/ 2>/dev/null; true"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "3.7.2"
+  }
+}

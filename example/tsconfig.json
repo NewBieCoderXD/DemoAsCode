@@ -1,9 +1,9 @@
 {
-  "extends": "../tsconfig.json",
+  "extends": "../apps/engine/tsconfig.json",
   "compilerOptions": {
     "rootDir": "..",
-    "outDir": "../dist",
+    "outDir": "dist",
     "declaration": false
   },
-  "include": ["../engine/**/*", "./**/*"]
+  "include": ["../apps/engine/src/**/*", "./**/*"]
 }
