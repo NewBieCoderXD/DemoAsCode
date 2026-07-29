@@ -7,7 +7,7 @@ on:
 
 env:
   APP_NAME: demo-as-code-postprocess
-  POSTPROCESS_DIR: apps/engine/post-processor
+  ENGINE_DIR: apps/engine/
   CARGO_INCREMENTAL: 1
 
 jobs:
@@ -89,7 +89,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Build
-        working-directory: ${{ env.POSTPROCESS_DIR }}
+        working-directory: ${{ env.ENGINE_DIR }}
         shell: bash
         run: ${{ matrix.settings.build }}
 
@@ -132,33 +132,33 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Create npm dirs
-        run: cd ${{ env.POSTPROCESS_DIR }} && pnpm exec napi create-npm-dirs
+        run: cd ${{ env.ENGINE_DIR }} && pnpm exec napi create-npm-dirs
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
-          path: ${{ env.POSTPROCESS_DIR }}/artifacts
+          path: ${{ env.ENGINE_DIR }}/artifacts
 
       - name: Move artifacts
-        run: cd ${{ env.POSTPROCESS_DIR }} && pnpm exec napi artifacts
+        run: cd ${{ env.ENGINE_DIR }} && pnpm exec napi artifacts
 
       - name: List packages
-        run: ls -la ${{ env.POSTPROCESS_DIR }}/npm && find ${{ env.POSTPROCESS_DIR }}/npm -name "*.node" -o -name "package.json" | head -20
+        run: ls -la ${{ env.ENGINE_DIR }}/npm && find ${{ env.ENGINE_DIR }}/npm -name "*.node" -o -name "package.json" | head -20
 
       - name: Restore generated binding wrappers
         run: |
           mkdir -p apps/engine/dist/postprocessing/
-          cp ${{ env.POSTPROCESS_DIR }}/artifacts/napi-wrappers/* apps/engine/dist/postprocessing/
+          cp ${{ env.ENGINE_DIR }}/artifacts/napi-wrappers/* apps/engine/dist/postprocessing/
 
       - name: Build TypeScript
         run: pnpm --filter demo-as-code run ts:build
 
       - name: Prepare for prepublish
-        run: cd ${{ env.POSTPROCESS_DIR }} && pnpm exec napi prepublish -t npm --skip-optional-publish
+        run: cd ${{ env.ENGINE_DIR }} && pnpm exec napi prepublish -t npm --skip-optional-publish
 
       - name: Publish platform packages
         run: |
-          for dir in ${{ env.POSTPROCESS_DIR }}/npm/*/; do
+          for dir in ${{ env.ENGINE_DIR }}/npm/*/; do
             if [ -f "$dir/package.json" ]; then
               echo "Publishing $dir..."
               (cd "$dir" && pnpm stage publish --access public --no-git-checks)
