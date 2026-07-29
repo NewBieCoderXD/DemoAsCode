@@ -35,19 +35,20 @@ jobs:
         settings:
           - host: macos-latest
             target: x86_64-apple-darwin
-            build: cd $POSTPROCESS_DIR && pnpm exec napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-apple-darwin
+            build: pnpm exec napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-apple-darwin
           - host: macos-latest
             target: aarch64-apple-darwin
-            build: cd $POSTPROCESS_DIR && pnpm exec napi build --platform --release --esm -o ../dist/postprocessing --target aarch64-apple-darwin
+            build: pnpm exec napi build --platform --release --esm -o ../dist/postprocessing --target aarch64-apple-darwin
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
-            build: cd $POSTPROCESS_DIR && pnpm exec napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-unknown-linux-gnu --use-napi-cross
+            build: pnpm exec napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-unknown-linux-gnu --use-napi-cross
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
-            build: cd $POSTPROCESS_DIR && pnpm exec napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-unknown-linux-musl -x
+            build: pnpm exec napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-unknown-linux-musl -x
           - host: windows-latest
             target: x86_64-pc-windows-msvc
-            build: cd $POSTPROCESS_DIR && pnpm exec napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-pc-windows-msvc
+            shell: bash
+            build: pnpm exec napi build --platform --release --esm -o ../dist/postprocessing --target x86_64-pc-windows-msvc
 
     name: stable - ${{ matrix.settings.target }}
     runs-on: ${{ matrix.settings.host }}
@@ -86,7 +87,11 @@ jobs:
           tool: cargo-zigbuild
 
       - run: pnpm install --frozen-lockfile
-      - run: ${{ matrix.settings.build }}
+
+      - name: Build
+        working-directory: ${{ env.POSTPROCESS_DIR }}
+        shell: bash
+        run: ${{ matrix.settings.build }}
 
       - uses: actions/upload-artifact@v4
         with:
