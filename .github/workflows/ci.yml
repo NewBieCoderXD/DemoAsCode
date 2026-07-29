@@ -133,6 +133,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Copy readme
+        run: cp README.md apps/engine/
+
       - name: Create npm dirs
         run: cd ${{ env.ENGINE_DIR }} && pnpm exec napi create-npm-dirs
 

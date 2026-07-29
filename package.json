@@ -1,6 +1,6 @@
 {
   "name": "demo-as-code-monorepo",
-  "private": true,
+  "private": false,
   "type": "module",
   "scripts": {
     "build": "pnpm --filter demo-as-code build",
