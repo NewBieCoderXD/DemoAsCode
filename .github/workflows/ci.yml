@@ -8,6 +8,8 @@ on:
 env:
   APP_NAME: demo-as-code-postprocess
   ENGINE_DIR: apps/engine/
+  POSTPROCESSOR_DIR: apps/engine/post-processor
+  DIST_POSTPROCESSOR_DIR: apps/engine/dist/postprocessing
   CARGO_INCREMENTAL: 1
 
 jobs:
@@ -89,22 +91,22 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Build
-        working-directory: ${{ env.ENGINE_DIR }}
+        working-directory: ${{ env.POSTPROCESSOR_DIR }}
         shell: bash
         run: ${{ matrix.settings.build }}
 
       - uses: actions/upload-artifact@v4
         with:
           name: bindings-${{ matrix.settings.target }}
-          path: apps/engine/dist/postprocessing/${{ env.APP_NAME }}.*.node
+          path: ${{ env.DIST_POSTPROCESSOR_DIR }}/${{ env.APP_NAME }}.*.node
           if-no-files-found: error
 
       - uses: actions/upload-artifact@v4
         with:
           name: napi-wrappers
           path: |
-            apps/engine/dist/postprocessing/index.js
-            apps/engine/dist/postprocessing/index.d.ts
+            ${{ env.DIST_POSTPROCESSOR_DIR }}/index.js
+            ${{ env.DIST_POSTPROCESSOR_DIR }}/index.d.ts
           if-no-files-found: error
           overwrite: true
 
