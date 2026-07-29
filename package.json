@@ -8,6 +8,7 @@
     "docs:build": "pnpm --filter @demo-as-code/website build",
     "docs:deploy": "pnpm --filter @demo-as-code/website deploy",
     "lint": "eslint .",
+    "format": "oxfmt --ignore-path=apps && pnpm --filter demo-as-code format && pnpm --filter @demo-as-code/website format",
     "napi:create-npm-dirs": "cd apps/engine/post-processor && napi create-npm-dirs",
     "napi:artifacts": "cd apps/engine/post-processor && napi artifacts"
   },
@@ -22,12 +23,12 @@
     "typescript": "5.7.3",
     "typescript-eslint": "8.65.0"
   },
-  "packageManager": "pnpm@11.9.0",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
       "version": "11.9.0",
       "onFail": "download"
     }
-  }
+  },
+  "packageManager": "pnpm@11.9.0"
 }

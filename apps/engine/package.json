@@ -1,19 +1,25 @@
 {
   "name": "demo-as-code",
-  "version": "1.0.7",
-  "keywords": ["demo", "playwright", "demo-as-code"],
+  "version": "v1.0.7-beta.1",
   "description": "Demo As Code tool using Playwright & Rust",
-  "author": "Chanmetha Promvijitrakarn (NewBieCoderXD) <fruity5555@gmail.com>",
+  "keywords": [
+    "demo",
+    "demo-as-code",
+    "playwright"
+  ],
   "homepage": "https://github.com/NewBieCoderXD/DemoAsCode#readme",
   "bugs": {
     "url": "https://github.com/NewBieCoderXD/DemoAsCode/issues"
   },
+  "license": "ISC",
+  "author": "Chanmetha Promvijitrakarn (NewBieCoderXD) <fruity5555@gmail.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/NewBieCoderXD/DemoAsCode.git"
   },
-  "license": "ISC",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,6 +33,20 @@
       "default": "./dist/index.js"
     }
   },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "napi:build": "cd post-processor && napi build --platform --release --esm -o ../dist/postprocessing && cp *.node ../dist/postprocessing/ 2>/dev/null; true",
+    "ts:build": "tsc",
+    "build": "pnpm run napi:build && pnpm run ts:build",
+    "format": "oxfmt && cd post-processor && cargo fmt"
+  },
+  "dependencies": {
+    "@playwright/test": "1.61.1",
+    "playwright": "1.61.1",
+    "winston": "3.19.0"
+  },
   "napi": {
     "binaryName": "demo-as-code-postprocess",
     "targets": [
@@ -36,18 +56,5 @@
       "aarch64-apple-darwin",
       "x86_64-pc-windows-msvc"
     ]
-  },
-  "dependencies": {
-    "@playwright/test": "1.61.1",
-    "playwright": "1.61.1",
-    "winston": "3.19.0"
-  },
-  "scripts": {
-    "napi:build": "cd post-processor && napi build --platform --release --esm -o ../dist/postprocessing && cp *.node ../dist/postprocessing/ 2>/dev/null; true",
-    "ts:build": "tsc",
-    "build": "pnpm run napi:build && pnpm run ts:build"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }
