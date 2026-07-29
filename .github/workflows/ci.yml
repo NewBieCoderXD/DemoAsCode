@@ -132,7 +132,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Create npm dirs
-        run: cd ${{ env.POSTPROCESS_DIR }} && napi create-npm-dirs
+        run: cd ${{ env.POSTPROCESS_DIR }} && pnpm exec napi create-npm-dirs
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
@@ -140,7 +140,7 @@ jobs:
           path: ${{ env.POSTPROCESS_DIR }}/artifacts
 
       - name: Move artifacts
-        run: cd ${{ env.POSTPROCESS_DIR }} && napi artifacts
+        run: cd ${{ env.POSTPROCESS_DIR }} && pnpm exec napi artifacts
 
       - name: List packages
         run: ls -la ${{ env.POSTPROCESS_DIR }}/npm && find ${{ env.POSTPROCESS_DIR }}/npm -name "*.node" -o -name "package.json" | head -20
@@ -154,7 +154,7 @@ jobs:
         run: pnpm --filter demo-as-code run ts:build
 
       - name: Prepare for prepublish
-        run: cd ${{ env.POSTPROCESS_DIR }} && napi prepublish -t npm --skip-optional-publish
+        run: cd ${{ env.POSTPROCESS_DIR }} && pnpm exec napi prepublish -t npm --skip-optional-publish
 
       - name: Publish platform packages
         run: |
