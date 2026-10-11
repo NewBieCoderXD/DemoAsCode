@@ -94,6 +94,15 @@ Recordings are saved to `./results/videos/` as processed MP4 files with:
 - Mouse cursor overlay
 - Configurable quality (CRF) and resolution
 
+## Limitations
+
+- **Frame rate** - The output video is rendered at a fixed 25 fps, and the source capture is capped by Playwright's video recording. Higher frame rates or perfectly smooth motion are not supported.
+- **CSS loading delay** - There is no automatic wait for stylesheets, web fonts, or images. If interactions begin before the page is fully styled, the opening frames may show unstyled content. Wait for the load state (e.g. `page.waitForLoadState("networkidle")`) and for fonts before interacting.
+- **Cursor overlay** - The mouse overlay is a plain red circle with a fixed radius. Click events are recorded but not visualized, and there is no support for custom cursor images, click ripples, or cursor animations.
+- **Output format and path** - The final video is encoded as WebM (VP9), not MP4, and is written to a fixed `./results/output_processed.webm` path regardless of the `outputDir` passed to the constructor.
+- **Browser and platform** - Only Chromium is supported, and recording runs headless only. A custom `size` is overridden by a hardcoded 1920x1080 viewport.
+- **Telemetry scope** - Only `mousemove` and `mousedown` events are captured. Scroll, keyboard, hover states, and audio are not recorded.
+
 ## Documentation
 
 Full documentation is available at [https://newbiecoderxd.github.io/DemoAsCode/](https://newbiecoderxd.github.io/DemoAsCode/).

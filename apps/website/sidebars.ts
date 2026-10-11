@@ -4,6 +4,7 @@ const sidebars: SidebarsConfig = {
   docsSidebar: [
     "intro",
     "getting-started",
+    "limitations",
     {
       type: "category",
       label: "Guides",

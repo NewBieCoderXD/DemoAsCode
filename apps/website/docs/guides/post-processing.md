@@ -35,6 +35,7 @@ The pipeline accepts these parameters:
 | `videoPath`  | `string`          | Input video file          |
 | `zoomLog`    | `ZoomLogEntry[]`  | Zoom level timeline       |
 | `mouseLog`   | `MouseLogEntry[]` | Mouse position timeline   |
+| `crf`        | `number?`         | Encoder quality (0-63, lower = better, default 4) |
 | `width`      | `number`          | Output width              |
 | `height`     | `number`          | Output height             |
 | `fps`        | `number`          | Output frame rate         |

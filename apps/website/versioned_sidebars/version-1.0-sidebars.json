@@ -2,6 +2,7 @@
   "docsSidebar": [
     "intro",
     "getting-started",
+    "limitations",
     {
       "type": "category",
       "label": "Guides",
