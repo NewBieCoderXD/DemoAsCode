@@ -1,6 +1,6 @@
 {
   "name": "demo-as-code",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Demo As Code tool using Playwright & Rust",
   "keywords": [
     "demo",
