@@ -22,17 +22,19 @@ const page = await recorder.initialize({
   initialMousePos: { x: 500, y: 500 },
   initialZoom: 1,
   crf: 4,
+  deviceScaleFactor: 2,
 });
 ```
 
 ### Options
 
-| Option            | Type                | Default              | Description                    |
-| ----------------- | ------------------- | -------------------- | ------------------------------ |
-| `size`            | `{ width, height }` | `1920x1080`          | Viewport dimensions            |
-| `initialMousePos` | `{ x, y }`          | `{ x: 500, y: 500 }` | Starting cursor position       |
-| `initialZoom`     | `number`            | `1`                  | Starting zoom level            |
-| `crf`             | `number`            | `4`                  | Video quality (lower = better) |
+| Option              | Type                | Default              | Description                                  |
+| ------------------- | ------------------- | -------------------- | -------------------------------------------- |
+| `size`              | `{ width, height }` | `1920x1080`          | Viewport dimensions                          |
+| `initialMousePos`   | `{ x, y }`          | `{ x: 500, y: 500 }` | Starting cursor position                     |
+| `initialZoom`       | `number`            | `1`                  | Starting zoom level                          |
+| `crf`               | `number`            | `4`                  | Video quality (lower = better)               |
+| `deviceScaleFactor` | `number`            | `1`                  | Device scale factor (DPR) for the viewport   |
 
 ## Tracking Zoom
 

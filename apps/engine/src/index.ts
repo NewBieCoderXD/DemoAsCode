@@ -20,6 +20,7 @@ const DEFAULT_DEMO_OPTIONS: DemoAsCodeOptions = {
   initialMousePos: { x: 500, y: 500 },
   initialZoom: 1,
   crf: 4,
+  deviceScaleFactor: 1,
 };
 
 export interface DemoAsCodeOptions {
@@ -27,6 +28,7 @@ export interface DemoAsCodeOptions {
   initialMousePos: { x: number; y: number };
   initialZoom: number;
   crf?: number;
+  deviceScaleFactor?: number;
 }
 
 export class Recorder {
@@ -67,7 +69,7 @@ export class Recorder {
 
     this.context = await this.browser.newContext({
       viewport: { ...config.size },
-      deviceScaleFactor: 1,
+      deviceScaleFactor: config.deviceScaleFactor,
       recordVideo: {
         dir: path.join(this.outputDir, "videos"),
         size: { ...config.size },
@@ -87,10 +89,13 @@ export class Recorder {
   }
 
   private async setupTelemetry(page: Page): Promise<void> {
-    await page.exposeFunction("__recorder_streamMouseLog", (frame: Omit<MouseLogEntry, "t">) => {
-      const elapsedSeconds = (Date.now() - this.startTime) / 1000;
-      this.mouseLog.push({ t: elapsedSeconds, ...frame });
-    });
+    await page.exposeFunction(
+      "__recorder_streamMouseLog",
+      (frame: Omit<MouseLogEntry, "t">) => {
+        const elapsedSeconds = (Date.now() - this.startTime) / 1000;
+        this.mouseLog.push({ t: elapsedSeconds, ...frame });
+      },
+    );
 
     await page.evaluate(`(() => {
       const handler = (e) => {

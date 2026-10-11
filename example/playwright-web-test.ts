@@ -6,6 +6,7 @@ async function run() {
   const page = await recorder.initialize({
     size: { width: 1920, height: 1080 },
     initialMousePos: { x: 100, y: 600 },
+    deviceScaleFactor: 10,
     initialZoom: 1,
   });
 
