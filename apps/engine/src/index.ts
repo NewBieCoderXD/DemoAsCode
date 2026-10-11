@@ -41,7 +41,7 @@ export class Recorder {
   private zoomLog: ZoomLogEntry[] = [];
   private startTime: number = 0;
 
-  private readonly ffmpegPath: string | undefined = undefined;
+  private ffmpegPath: string | undefined = undefined;
 
   private options: DemoAsCodeOptions | null = null;
 
@@ -121,6 +121,10 @@ export class Recorder {
     });
   }
 
+  setFfmpegPath(ffmpegPath: string): void {
+    this.ffmpegPath = ffmpegPath;
+  }
+
   async closeAndSave(): Promise<void> {
     let result = "";
     if (!this.page) {
@@ -158,6 +162,7 @@ export class Recorder {
       mouseLog: this.mouseLog,
       width: this.options!.size.width,
       height: this.options!.size.height,
+      crf: this.options!.crf,
       ffmpegPath: this.ffmpegPath,
       fps: 25,
     });
